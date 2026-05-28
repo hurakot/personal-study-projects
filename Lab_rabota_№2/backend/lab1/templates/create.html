@@ -1,0 +1,25 @@
+
+
+{% extends "base.html" %}
+
+{% block content %}
+
+    <h1>Создать Nerf</h1>
+
+    <form method="post">
+        {% csrf_token %}
+    
+        <input type="text" name="title" placeholder="Название"><br>
+        <input type="text" name="series" placeholder="Серия"><br>
+        <input type="text" name="bullet" placeholder="Патроны"><br>
+        <input type="number" step="0.01" name="price" placeholder="Цена"><br>
+        <input type="date" name="time_create"><br>
+
+        <label>
+            Доступна
+            <input type="checkbox" name="available">
+        </label><br>
+
+        <button type="submit">Создать</button>
+    </form>
+{% endblock %}

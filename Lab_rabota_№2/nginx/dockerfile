@@ -1,0 +1,12 @@
+
+#dockerfile - это текстовый файл с инструкциями для автоматической сборки Docker образа 
+#(пошаговое описание, как из базового образа получить готовый к запуску образ).
+
+#Загружаем образ nginx в контейнер
+FROM nginx:alpine
+
+# Копируем шаблон конфигурации
+COPY templates/default.conf.template /etc/nginx/templates/default.conf.template
+
+# Шаблон будет обработан при старте nginx
+# Переменные окружения можно передать через environment в docker-compose

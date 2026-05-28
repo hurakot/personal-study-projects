@@ -1,0 +1,35 @@
+-----BEGIN CERTIFICATE-----
+MIIDizCCAnOgAwIBAgIUKFvf2QI7y1zhRu4QWw//CD540K0wDQYJKoZIhvcNAQEL
+BQAwVTELMAkGA1UEBhMCUlUxDzANBgNVBAgMBk1vc2NvdzEPMA0GA1UEBwwGTW9z
+Y293MRAwDgYDVQQKDAdDb21wYW55MRIwEAYDVQQDDAlsb2NhbGhvc3QwHhcNMjYw
+NTA2MTc0NDE0WhcNMjcwNTA2MTc0NDE0WjBVMQswCQYDVQQGEwJSVTEPMA0GA1UE
+CAwGTW9zY293MQ8wDQYDVQQHDAZNb3Njb3cxEDAOBgNVBAoMB0NvbXBhbnkxEjAQ
+BgNVBAMMCWxvY2FsaG9zdDCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEB
+AI/Ftr5FM2zl5eBey8ek2nQUi7OjGjuYvCMYxe4klQc7goEphJOZbB4rYGwGiHj5
+kDJzq+RwblvOS6vuK33tuyuVGUP4bP3jfu8VVc+GErpo9keNZPyd4qWzj/iFD8wc
+UKPY98c1nh4XLDX5s3W8OjGwJJVXohXgktv1yezW+UhhJvFx9lApU12k3RAb7DNl
+0mqEWQnRXNMHSsYkbs2A5SZWAz48eObBLdxmsgokGpBeyXbMwRBoO6AAq4ydrZD7
+MveifaOykGxNYNwxdsMb05ChINYYofOF//Dad2ePSbPAo+qO4+W4WI77HDYPobcL
+f3r0PrEXpde2JEUJF8mOFGcCAwEAAaNTMFEwHQYDVR0OBBYEFJpcrJWQurEctB2h
+iFlQ5M2t61O/MB8GA1UdIwQYMBaAFJpcrJWQurEctB2hiFlQ5M2t61O/MA8GA1Ud
+EwEB/wQFMAMBAf8wDQYJKoZIhvcNAQELBQADggEBADfsaqkidotssuqgGmS5sYm+
+G82JMnSFoVBWNlo0ByuLAMnK9iCpCYxgx8pu0f9nUhglE2ZJ/GsfiUJOuTP1lOa0
+fBSWVNaVhetY1KslS+40CpsrpKZFEKyxJO/A5u+2POJHZYV4ZlAxDn5/wrsVMUUK
+LWuc2IjrUgOpYtOCZdOLJihK3HSTn9MZ8EIWx3DAqUZD1cJWXuwF+LFhOmGnZMzF
+JGdGB6YJ7uQ4/TlbuNJH3X2KdCe/D65uEcT3bWKyUzkm4T+2CDkzdB49ODNJ7Wnq
+z7o9gRCQipR3/ZLrr4VoIylYrOIoOkAopoowBKMRbhqpoCxiyky3mVdMjpeNFx4=
+-----END CERTIFICATE-----
+
+# server.crt — это публичный SSL/TLS сертификат (или просто "сертификат"), 
+# который используется для шифрования HTTPS-трафика и подтверждения подлинности вашего сайта.
+
+# server.key — это приватный ключ SSL/TLS сертификата. Он используется для
+# 1. шифрования трафика между браузером пользователя и Nginx
+# 2. Доказательства вашего домена (что вы владелец сайта)
+# 3. Доказательства того, что сайт принадлежит именно пользователю
+
+# server.key - Расшифровка трафика, доказательство владения, никогда нельзя им делиться.
+# server.crt - Идентификация сайта, шифрование данных, им можно делиться с остальными пользователями.
+
+# Вместе с server.key (приватным ключом) они образуют SSL-пару, 
+# которая обеспечивает безопасное соединение между браузером пользователя и вашим Nginx сервером.

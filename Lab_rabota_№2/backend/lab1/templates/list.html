@@ -1,0 +1,21 @@
+
+
+
+
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Список Nerf-пушек</h1>
+
+    <a href="{% url 'create' %}">Создать новую</a>
+
+    <ul>
+        {% for nerf in nerfs %}
+            <li>
+                <a href="{% url 'watch_one' nerf.id %}">
+                   {{ nerf.title }} - {{ nerf.price }}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

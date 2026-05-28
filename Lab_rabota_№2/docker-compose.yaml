@@ -1,0 +1,97 @@
+
+#docker-compose.yaml - файл, в котором происходит определение и 
+#запуск многоконтейнерных приложений (оркестрация на одном хосте) с помощью одной командой.
+
+#Сначала Docker анализирует весь файл и создаёт сеть и папки, указанные в nginx, а потом запускает все сервисы
+
+services: #Запускаемые сервисы
+  postgres_db: #Сервис PostgreSQL
+    image: postgres:15-alpine #На каком образе создан сервис
+    container_name: postgres_db #Имя контейнера, который будет запущенным экземпляром образа
+    volumes: # Тома, в которых будут храниться любые данные сервиса, которые должны сохраниться после перезагрузки
+      - postgres_data:/var/lib/postgresql/data
+    environment: #Переменные окружения, которые будут загружены в контейнер сервиса. Переменные будут использованы в работе контейнера.
+      - POSTGRES_DB=postgres #Данные переменные будут использованы для инициализации базы данных
+      - POSTGRES_USER=postgres #Данные переменные будут использованы для инициализации базы данных
+      - POSTGRES_PASSWORD=postgres #Данные переменные будут использованы для инициализации базы данных
+    ports: #Проброс портов в формате: "Порт_на_хосте:Порт_в_контейнере"
+      - "5433:5432"
+    networks: #Сервис будет подключен к сети app_network
+      - app_network
+    healthcheck: #Механизм, который проверяет, что сервис работает и готов принимать запросы                          
+      test: ["CMD-SHELL", "pg_isready -U postgres"] #Команда для проверки работоспособности сервиса
+      interval: 10s #Интервал между попытками
+      timeout: 5s #Сколько дать времени на выполнение попытки
+      retries: 5 #Количество попыток
+
+  migrations: #Миграции в базу данных
+    build: ./backend #Собирает образ из ./backend
+    container_name: django_migrations 
+    #Выполняет команды для выполнения миграция
+    # 1. Выполнение миграций и 
+    # 2. Собирает статические файлы в одну папку
+    command: >
+      sh -c "python manage.py migrate &&
+             python manage.py collectstatic --noinput" 
+    volumes:
+      - ./backend:/app
+      - static_volume:/app/staticfiles
+    environment:
+      - DEBUG=0
+      - DB_NAME=postgres
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+      - DB_HOST=postgres_db
+      - DB_PORT=5432
+    depends_on: #Будет создан контейнер в том случае, если севрис postgres_db успешно выполнит healthcheck
+      postgres_db:
+        condition: service_healthy #Будет создан контейнер в том случае, если севрис postgres_db успешно выполнит healthcheck
+    networks: #Сервис будет подключен к сети app_network
+      - app_network
+    restart: "no" #Команда выполняется один раз и после её выполнения не нужно её снова исполнять ещё 1 раз.
+
+  backend:
+    build: ./backend #Собирает образ из ./backend, который находится в папке проекта, в той же папке, что и docker-compose.yaml
+    container_name: django_backend
+    command: gunicorn lab1.wsgi:application --bind 0.0.0.0:8000 #Открывается WSGI-сервер (gunicorn), который слушает все сервисы на порту 8000
+    volumes:
+      - ./backend:/app #Монтирование кода с хоста на контейнер
+      - static_volume:/app/staticfiles #именованный том Docker, в котором сохранятся данные backend, данные в контейнере будут храниться в /app/staticfiles
+    expose: #Открывает порт 8000 внутри сети Docker для других контейнеров. ("8000:8000" - порт доступен с хоста) (8000 - порт доступен для работы между контейнерами)
+      - "8000"
+    environment:
+      - DEBUG=0
+      - DB_NAME=postgres
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+      - DB_HOST=postgres_db
+      - DB_PORT=5432
+    depends_on: #backend будет собран
+      postgres_db:
+        condition: service_healthy #Если postgres_db успешно пройдёт healthcheck
+      migrations:
+        condition: service_completed_successfully #Если успешно выполнятся миграции
+    networks: #Сервис будет подключен к сети app_network
+      - app_network
+
+  nginx:
+    build: ./nginx #Собирает образ из ./nginx
+    container_name: nginx_proxy
+    ports: #Проброс портов в формате: "Порт_на_хосте:Порт_в_контейнере"
+      - "80:80"
+      - "443:443"
+    volumes:
+      - static_volume:/staticfiles #Данные nginx в контейнере nginx будут храниться в /staticfiles
+      - ./nginx/ssl:/etc/nginx/ssl #Из папки на хочте в папку внутри контейнера
+    depends_on: #nginx будет собран
+      - backend #Если backend будет собран
+    networks: #Сервис будет подключен к сети app_network
+      - app_network
+
+volumes: #Создаёт следующие директории для работы приложения
+  postgres_data:
+  static_volume:
+
+networks: #Отвечает за сеть и создаёт сеть app_network, для которой используется стандартный сетевой драйвер Docker
+  app_network:
+    driver: bridge #Используется стандартный сетевой драйвер Docker

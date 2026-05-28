@@ -1,0 +1,23 @@
+
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Редактировать</h1>
+
+    <form method="post">
+        {% csrf_token %}
+    
+        <input type="text" name="title" value="{{ nerf.title }}"><br>
+        <input type="text" name="series" value="{{ nerf.series }}"><br>
+        <input type="text" name="bullet" value="{{ nerf.bullet }}"><br>
+        <input type="number" step="0.01" name="price" value="{{ nerf.price }}"><br>
+        <input type="date" name="time_create" value="{{ nerf.time_create|date:'Y-m-d' }}"><br>
+
+        <label>
+            Доступна
+            <input type="checkbox" name="available" {% if nerf.available %}checked{% endif %}>
+        </label><br>
+
+        <button type="submit">Сохранить</button>
+    </form>
+{% endblock %}

@@ -1,0 +1,23 @@
+
+#dockerfile - это текстовый файл с инструкциями для автоматической сборки Docker образа 
+#(пошаговое описание, как из базового образа получить готовый к запуску образ).
+
+#4.b. Публично доступный образ slim
+FROM python:3.11-slim
+
+#4.c. Указать переменные окружения PYTHONDONTWRITEBYTECODE и PYTHONUNBUFFERED.
+#4.c.1. Отключение создания .pyc файлов
+#4.c.2. Отключение буферизации выхода python
+env PYTHONDONTWRITEBYTECODE=1 
+env PYTHONUNBUFFERED=1
+
+
+
+#Устанавливаем рабочую директорию
+WORKDIR /app
+
+#4.d. Скопировать в образ файл requirements.txt и установить из него зависимости, не испольщуя кэш сохранённых ранее пакетов.
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt 
+#4.e. Скопировать файлы исходного кода в собираемый образ.
+COPY . .

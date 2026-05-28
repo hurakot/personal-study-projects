@@ -1,0 +1,16 @@
+
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>{{ nerf.title }}</h1>
+
+    <p>Серия: {{ nerf.series }}</p>
+    <p>Тип патронов: {{ nerf.bullet }}</p>
+    <p>Цена: {{ nerf.price }}</p>
+    <p>Дата выпуска: {{ nerf.time_create }}</p>
+    <p>Доступна: {{ nerf.available }}</p>
+
+    <a href="{% url 'change' nerf.id %}">Редактировать</a>
+    <a href="{% url 'delete' nerf.id %}">Удалить</a>
+    <a href="{% url 'watch_all' %}">Назад</a>
+{% endblock %}

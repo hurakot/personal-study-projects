@@ -1,0 +1,37 @@
+
+
+# default.conf.template - это шаблон конфигурационного файл nginx, который превращает nginx в обратный прокси-сервер (reverse proxy) для Django-приложения
+
+#В данном файле описан процесс проксирования
+
+# Настройки для порта 80
+
+server {
+    listen 80; #Какой порт прослушивает
+    server_name localhost; #Для каких доменных имён блок будет обрабатывать запросы 
+    return 301 https://$server_name$request_uri;  # Перенаправление на HTTPS
+}
+
+# Настройки для порта 443
+
+server {
+    listen 443 ssl; #Какой порт прослушивает с протоколом ssl
+    server_name localhost;
+
+    ssl_certificate /etc/nginx/ssl/server.crt; #Использование сертификата SSL/TLS для nginx
+    ssl_certificate_key /etc/nginx/ssl/server.key; #Использование ключа для nginx
+
+    #Отдача файлов
+    location /static/ {
+        alias /staticfiles/; #Просматривает данные файлы и отдаёт их.
+    }
+
+    #Прокси
+    location ~ ^/(admin|api) {
+        proxy_pass http://backend:8000;  # Передаёт Django
+        proxy_set_header Host $host; #Изменение HTTP-запросов
+        proxy_set_header X-Real-IP $remote_addr; #Изменение HTTP-запросов
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for; #Изменение HTTP-запросов
+        proxy_set_header X-Forwarded-Proto $scheme; #Изменение HTTP-запросов
+    }
+}

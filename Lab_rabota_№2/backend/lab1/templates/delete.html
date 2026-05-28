@@ -1,0 +1,14 @@
+
+
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Удалить {{ nerf.title }}?</h1>
+
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit">Да, удалить</button>
+    </form>
+
+    <a href="{% url 'watch_all' %}">Отмена</a>
+{% endblock %}
