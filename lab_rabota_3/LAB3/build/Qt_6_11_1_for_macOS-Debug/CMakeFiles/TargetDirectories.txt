@@ -1,0 +1,5 @@
+/Users/pavelpatokin/Desktop/Python/Architecture/lab_rabota_3/LAB3/build/Qt_6_11_1_for_macOS-Debug/CMakeFiles/LabRabota3.dir
+/Users/pavelpatokin/Desktop/Python/Architecture/lab_rabota_3/LAB3/build/Qt_6_11_1_for_macOS-Debug/CMakeFiles/edit_cache.dir
+/Users/pavelpatokin/Desktop/Python/Architecture/lab_rabota_3/LAB3/build/Qt_6_11_1_for_macOS-Debug/CMakeFiles/rebuild_cache.dir
+/Users/pavelpatokin/Desktop/Python/Architecture/lab_rabota_3/LAB3/build/Qt_6_11_1_for_macOS-Debug/CMakeFiles/LabRabota3_autogen_timestamp_deps.dir
+/Users/pavelpatokin/Desktop/Python/Architecture/lab_rabota_3/LAB3/build/Qt_6_11_1_for_macOS-Debug/CMakeFiles/LabRabota3_autogen.dir

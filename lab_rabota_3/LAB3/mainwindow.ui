@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x><y>0</y><width>720</width><height>520</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Nerf REST Client - Lab 3</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QVBoxLayout" name="verticalLayout">
+
+    <item>
+     <layout class="QHBoxLayout" name="modeLayout">
+      <item>
+       <widget class="QPushButton" name="btnModeLocal">
+        <property name="text"><string>Локально (127.0.0.1:8000)</string></property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="btnModeDocker">
+        <property name="text"><string>Docker (https://localhost)</string></property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+
+    <item>
+     <layout class="QHBoxLayout" name="idLayout">
+      <item>
+       <widget class="QLabel" name="lblId">
+        <property name="text"><string>ID:</string></property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="editId">
+        <property name="placeholderText">
+         <string>ID для Get / Update / Delete</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+
+    <item>
+     <layout class="QHBoxLayout" name="btnLayout">
+      <item>
+       <widget class="QPushButton" name="btnGetAll">
+        <property name="text"><string>Get All</string></property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="btnGetById">
+        <property name="text"><string>Get by ID</string></property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="btnCreate">
+        <property name="text"><string>Create</string></property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="btnUpdate">
+        <property name="text"><string>Update</string></property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="btnDelete">
+        <property name="text"><string>Delete</string></property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+
+    <item>
+     <widget class="QTextEdit" name="txtOutput">
+      <property name="readOnly"><bool>true</bool></property>
+     </widget>
+    </item>
+
+   </layout>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
