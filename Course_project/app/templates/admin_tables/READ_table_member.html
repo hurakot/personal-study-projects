@@ -1,0 +1,58 @@
+
+<!-- READ_UPDATE_table_member.html - Страница с таблицей для READ-UPDATE всех записей представителей -->
+
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='CRUD_table.css') }}">
+    <div class="container py-4">
+
+        {# ---- Верхняя панель навигационных кнопок ---- #}
+        <div class="d-flex flex-wrap gap-2 mb-4">
+            <a class="btn btn-info text-dark" href="{{ url_for('admin') }}">Инструменты администратора</a>
+            <a class="btn btn-info text-dark" href="{{ url_for('CRUD_table_member') }}">Работа с записями представителей</a>
+            <a class="btn btn-info text-dark" href="{{ url_for('CRUD_table_mercenary') }}">Работа с кабинетами наёмников</a>
+            <a class="btn btn-info text-dark" href="{{ url_for('CRUD_table_task') }}">Работа с заданиями</a>
+        </div>
+
+        <h1 class="mb-4">Инструмент с CRUD-функционалом записей представителей</h1>
+
+        {# ---- Таблица представителей ---- #}
+        <table class="table table-bordered align-middle text-center w-auto">
+            <thead>
+                <tr>
+                    <th>Характеристики</th>
+                    <th>Значение</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>id представителя</td>
+                    <td>{{ member.id }}</td>
+                </tr>
+                <tr>
+                    <td>Никнейм представителя</td>
+                    <td>{{ member.username }}</td>
+                </tr>
+                <tr>
+                    <td>Пароль представителя</td>
+                    <td>{{ member.password }}</td>
+                </tr>
+                <tr>
+                    <td>Организация представителя</td>
+                    <td>{{ member.member.fraction }}</td>
+                </tr>
+                <tr>
+                    <td>Код представителя</td>
+                    <td>{{ member.member.fraction_code }}</td>
+                </tr>
+                <tr>
+                    <td>Дата регистрации представителя</td>
+                    <td>{{ member.registration_date }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}

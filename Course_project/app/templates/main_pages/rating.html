@@ -1,0 +1,216 @@
+
+<!-- rating.html - Страница, на которой отображены все наёмники и их рейтинг -->
+
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="text-center mb-4">Рейтинг наёмников</h1>
+
+{# ---- Вступительный блок ---- #}
+<div class="welcome-block px-4 py-3 mb-4">
+    <p class="mb-0 text-dark">
+        &emsp;Здесь вы можете посмотреть рейтинг наёмников, с которыми вы можете связаться и предложить ему
+        выполнить миссию.
+    </p>
+</div>
+
+{# ---- Панель со списком наёмников ---- #}
+{# ---- <!-- Также можно будет добавить, если захочешь, среднюю цену наёмника ""Средняя цена: {{ merc.price_mercenary }} игровой валюты"" --> ---- #}
+<div class="list-panel p-3 mb-3">
+    {% for merc in mercenaries %}
+    <div class="merc-card mb-3 p-3">
+        <div class="merc-card__body px-3 py-2 mb-3">
+            <h2 class="merc-card__title h4 mb-2">Наёмник: {{ merc.user.username }}</h2>
+            <p class="mb-0 text-dark">
+                Статус: {{ merc.status_mercenary }}, Любимая фракция: {{ merc.favourite_fraction }},
+                Рейтинг: {{ merc.rating_mercenary }}, 
+                {# ---- <!-- Средняя цена: {{ merc.price_mercenary }} игровой валюты --> ---- #}
+            </p>
+        </div>
+        <div class="d-flex justify-content-end">
+            <div class="d-flex justify-content-end">
+            {# Кнопка открывает модальное окно именно этого наёмника #}
+                <button type="button" class="btn btn-info text-dark"
+                    data-bs-toggle="modal" data-bs-target="#mercModal{{ merc.user.id }}">Подробнее</button>
+            </div>
+        </div>
+    </div>
+    {# Модальное окно наёмника #}
+    <div class="modal fade" id="mercModal{{ merc.user.id }}" tabindex="-1"
+         aria-labelledby="mercModalLabel{{ merc.user.id }}" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content merc-modal">
+                <div class="modal-body p-4">
+
+                    {# Данные наёмника #}
+                    <div class="merc-card__body px-3 py-3 mb-3">
+                        <h2 class="merc-card__title h4 mb-2" id="mercModalLabel{{ merc.user.id }}">Наёмник: {{ merc.user.username }}</h2>
+                        <p class="mb-1 text-dark">Статус: {{ merc.status_mercenary }}</p>
+                        <p class="mb-1 text-dark">Любимая фракция: {{ merc.favourite_fraction }}</p>
+                        <p class="mb-1 text-dark">Рейтинг: {{ merc.rating_mercenary }}</p>
+                        {# ---- <!-- Средняя цена: {{ merc.price_mercenary }} игровой валюты --> ---- #}
+                        {# ---- <!-- <p class="mb-1 text-dark">Средняя цена: {{ merc.price_mercenary }} игровой валюты</p> --> ---- #}
+                        <p class="mb-1 text-dark">Дата регистрации: {{ merc.user.registration_date }}</p>
+                        <p class="mb-0 text-dark">Код сертификата: {{ merc.certificate_code }}</p>
+                    </div>
+
+                    {# Заголовок-разделитель #}
+                    <div class="section-header px-3 py-2 mb-3">
+                        <h3 class="h5 mb-0">Список выполненных заданий:</h3>
+                    </div>
+
+                    {# Прокручиваемый список выполненных заданий #}
+                    <div class="panel-scroll">
+                        {% for task in completed_tasks %}
+                            {% if merc.user.id == task.id_mercenary %}
+                                <div class="task-card mb-3 p-3">
+                                    <div class="task-card__title px-3 py-2 mb-3">
+                                        <h4 class="h5 mb-0">{{ task.id_name_task }}</h4>
+                                    </div>
+                                    <div class="task-card__desc px-3 py-2 mb-3 text-dark">
+                                        {{ task.short_description }}
+                                    </div>
+                                    <div class="task-card__badges px-3 py-2 mb-3 d-flex flex-wrap gap-2">
+                                        <span class="badge-item">Цель: {{ task.purpose_task }}</span>
+                                        <span class="badge-item">Награда: {{ task.reward_task }}</span>
+                                        <span class="badge-item">Рейтинг: {{ task.rating_task }}</span>
+                                        <span class="badge-item">Дата: {{ task.start_of_task }}</span>
+                                    </div>
+                                    <div class="d-flex justify-content-end">
+                                        <a class="btn btn-info text-dark"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#taskModal{{ task.id_task }}">Подробнее</a>
+                                    </div>
+                                </div>
+                            {% else %}
+                                {#---- Здесь ничего нет ----#}
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="modal-footer border-0">
+                    <button type="button" class="btn btn-info text-dark px-4" data-bs-dismiss="modal">Назад</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+{# ---- Пагинация ---- #}
+<nav class="d-flex justify-content-center mb-3">
+    <ul class="pagination mb-0">
+        <li class="page-item {% if not pagination.has_prev %}disabled{% endif %}">
+            <a class="page-link"
+               href="{{ url_for('rating', page=pagination.prev_num) if pagination.has_prev else '#' }}">&lt;</a>
+        </li>
+
+        {% for p in pagination.iter_pages() %}
+            {% if p %}
+                <li class="page-item {% if p == pagination.page %}active{% endif %}">
+                    <a class="page-link" href="{{ url_for('rating', page=p) }}">{{ p }}</a>
+                </li>
+            {% else %}
+                <li class="page-item disabled"><span class="page-link">…</span></li>
+            {% endif %}
+        {% endfor %}
+
+        <li class="page-item {% if not pagination.has_next %}disabled{% endif %}">
+            <a class="page-link"
+               href="{{ url_for('rating', page=pagination.next_num) if pagination.has_next else '#' }}">&gt;</a>
+        </li>
+    </ul>
+</nav>
+
+{# ---- Модальное окно с подробным описанием задания ---- #}
+{% for task in completed_tasks %}
+    <div class="modal fade" id="taskModal{{ task.id_task }}" tabindex="-1"
+        aria-labelledby="taskModalLabel{{ task.id_task }}" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content task-modal">
+                <div class="modal-body text-dark p-4">
+                    <h2 class="task-modal__title h3 mb-3" id="taskModalLabel{{ task.id_task }}">{{ task.id_name_task }}</h2>
+
+                    <p class="mb-1">id задания: {{ task.id_task }}</p>
+                    <p class="mb-1">Цель: {{ task.purpose_task }}</p>
+                    <p class="mb-1">Организация: {{ task.fraction }}</p>
+                    <p class="mb-1">Рейтинг: {{ task.rating_task }}</p>
+                    <p class="mb-1">Награда: {{ task.reward_task }}</p>
+                    <p class="mb-1">Дата: {{ task.start_of_task }}</p>
+                    <p class="mb-3">Статус: &laquo;{{ task.status_task }}&raquo;</p>
+
+                    {# pre-line сохраняет абзацы, anywhere разрывает длинные строки без пробелов #}
+                    <p class="mb-1">&emsp;Описание:</p>
+                    <div style="white-space: pre-line; overflow-wrap: anywhere;">{{ task.full_description }}</div>
+                </div>
+                <div class="modal-footer border-0">
+                    <a class="btn btn-info text-dark px-4"
+                        href="{{ url_for('task_download', id_task=task.id_task) }}">Скачать</a>
+                    <button type="button" class="btn btn-info text-dark px-4" data-bs-dismiss="modal">Назад</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endfor %}
+
+<style>
+    .welcome-block {
+        background: rgba(108, 79, 196, 0.45);
+        border: 1px solid rgba(0, 0, 0, 0.25);
+        border-radius: 4px;
+    }
+    .list-panel { border: 1px solid rgba(0, 0, 0, 0.25); border-radius: 4px; }
+
+    .merc-card { background: rgba(40, 20, 120, 0.55); border-radius: 4px; }
+    .merc-card__body { background: rgba(108, 79, 196, 0.45); border-radius: 4px; }
+    .merc-card__title { color: #2b2b6b; }
+
+    /* Модальное окно наёмника */
+    .merc-modal { background: #6c5fc4; border: 1px solid rgba(0, 0, 0, 0.3); }
+
+    .section-header { background: #6c4fc4; border-radius: 4px; }
+    .section-header h3 { color: #2b2b6b; }
+
+    /* Прокручиваемый список заданий внутри окна */
+    .panel-scroll {
+        max-height: 380px;
+        overflow-y: auto;
+        background: rgba(40, 20, 120, 0.45);
+        border: 1px solid rgba(0, 0, 0, 0.3);
+        border-radius: 4px;
+        padding: 16px;
+    }
+    .panel-scroll::-webkit-scrollbar { width: 10px; }
+    .panel-scroll::-webkit-scrollbar-track { background: transparent; }
+    .panel-scroll::-webkit-scrollbar-thumb { background: #a32ba3; border-radius: 6px; }
+    .panel-scroll { scrollbar-width: thin; scrollbar-color: #a32ba3 transparent; }
+
+    /* Карточка задания */
+    .task-card { background: rgba(108, 79, 196, 0.35); border: 1px solid rgba(0,0,0,0.2); border-radius: 4px; }
+    .task-card__title { background: #6c4fc4; border-radius: 4px; }
+    .task-card__title h4 { color: #2b2b6b; }
+    .task-card__desc,
+    .task-card__badges { background: rgba(108, 79, 196, 0.45); border-radius: 4px; }
+
+    .badge-item {
+        display: inline-block;
+        background: rgba(108, 79, 196, 0.55);
+        border: 1px solid rgba(0, 0, 0, 0.35);
+        border-radius: 3px;
+        padding: 4px 10px;
+        color: #111;
+        font-size: 0.9rem;
+    }
+
+    .pagination .page-link {
+        color: #111;
+        background: rgba(108, 79, 196, 0.55);
+        border-color: rgba(0, 0, 0, 0.3);
+    }
+    .pagination .page-item.active .page-link {
+        background: #6c4fc4;
+        border-color: rgba(0, 0, 0, 0.3);
+        color: #2b2b6b;
+    }
+</style>
+{% endblock %}

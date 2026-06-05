@@ -1,0 +1,246 @@
+
+
+/* CRUD_table.css - файл с стилями для всех страниц с CRUD-таблицами, которые используются в инструментах администратора */
+
+:root {
+  --header-bg:   #3b39db;  /* фон шапки */
+  --link-color:  #000000;  /* цвет ссылок в шапке */
+  --link-hover:  #000000;  /* цвет ссылок при наведении */
+  --link-hover-zone: #262ed3;
+  --menu-bg:     #7d63e0;  /* фон выпадающего меню #7d63e0;  */
+  --menu-item:   #000000;  /* текст пунктов меню #6E3D9C;*/
+  --menu-hover:  #6a4fc9;  /* подсветка пункта при наведении #6a4fc9*/
+  --main-bg-color: #5743EF; /* Основной фоновый цвет страницы */
+  --page-border:    #642c7b;  /* Границы объектов */
+  --auth-btn:       #055596;  /* бирюзовые кнопки */
+  --auth-btn-hover: #184072;  /* выделенные бирюзовые кнопки */
+
+  --table-border-color: #000000;/* Границы таблицы */
+  --table-thead-color: #3F6EC5;/* Фон первой строки таблицы */
+  --table-tbody-color: #6E97E3;/* Фон остальных строк таблицы */
+
+  --btn-sm: #1661EB; /* Стиль кнопок в CRUD-таблицах */
+
+  --common-text-color: #000000; /* Цвет обычного текста на сайте*/
+}
+
+.navbar {
+  background-color: var(--header-bg);
+  padding-bottom: 5px;
+  padding-top: 5px;
+}
+
+/* Название сайта (www.pune.com) */
+.navbar-brand {
+  color: var(--link-color);
+  font-weight: 600;
+}
+
+/* Пункты навигации */
+.navbar .nav-link {
+  color: var(--link-color);
+}
+.navbar .nav-link:hover {
+  color: var(--link-hover);
+  background-color: var(--link-hover-zone);
+}
+
+/* Выпадающее меню (класс menu-violet) */
+.dropdown-menu.menu-violet {
+  background-color: var(--menu-bg);
+  border:1px #642C7B;
+}
+.menu-violet .dropdown-item {
+  color: var(--menu-item);
+}
+
+.menu-violet .dropdown-item:hover {
+  background-color: var(--menu-hover);
+  color: #000;
+}
+
+.main-container{
+    background-color: #FFFFFF;
+    padding: 30px 40px;
+    width: 100%;
+    min-height: 94vh; 
+    text-align: center;
+    
+
+}
+
+/* Блок с отображением роли пользователя*/
+.user_role{
+  display: flex;
+  align-self: flex-start;   /* не растягиваться по высоте флекс-родителя */
+  width: fit-content;       /* ширина строго по содержимому */
+  height: fit-content;      /* высота строго по содержимому */
+
+  align-items: center;
+  justify-content: center;
+
+  margin-top: 20px;
+  margin-bottom: 20px;
+  margin-left: 10px;
+  margin-right: 10px;
+  padding-left: 10px;
+  background-color: var(--main-bg-color);
+  height: auto;
+  border: var(--page-border);
+}
+
+/* Бирюзовые кнопки создания записи */
+.auth-btn-secondary {
+  background-color: var(--auth-btn);
+  color: #000;
+  font-weight: 600;
+  padding: 12px;
+  border: none;
+}
+
+.mini-box {
+  margin-top: 20px;
+  padding: 12px 16px;
+  border-radius: 12px;
+  background-color: #5743EF;
+  color: #000000;
+  text-align: center;
+}
+
+.mini-box-text {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.4;
+}
+
+.mini-box-btn {
+  display: block;
+  width: 100%;
+  margin-top: 10px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  background-color: var(--auth-btn);
+  color: #000000;
+  font-weight: 600;
+}
+
+.mini-box-btn:hover {
+  background-color: var(--auth-btn-hover);
+  color: #000000;
+}
+
+
+
+/* Стили таблицы */
+
+/* Стиль всей таблицы */
+table{
+  border-color: var(--table-border-color);
+}
+
+/* Стиль первой строки таблицы */
+thead{
+  background-color: var(--table-thead-color);
+  border-color: var(--table-border-color);
+}
+
+/* Стиль всех остальных строк таблицы */
+tbody{
+  background-color: var(--table-tbody-color);
+  border-color: var(--table-border-color);
+}
+
+
+
+/* Стили кнопок, ведущих к инструментам администратора и к другим CRUD-таблицам*/
+.btn-info{
+  background-color: var(--table-thead-color);
+}
+
+.btn-info:hover{
+  background-color: var(--auth-btn);
+}
+
+
+
+/* Стили кнопок в CRUD-таблицах */
+.btn-sm{
+  background-color: var(--btn-sm);
+  color: #000000;
+}
+
+input{
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  color-scheme: light;
+
+  width: 100%;          /* поле занимает всю ширину ячейки */
+  box-sizing: border-box;/* рамка и padding входят в ширину, не вылезают за столбец */
+
+  background-color: var(--table-thead-color);
+  color: #000000;
+  border: 2px solid var(--auth-btn);
+  border-radius: 5px;
+  padding: 3px 5px;   /* по желанию, чтобы текст не лип к краю */
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0 1000px var(--table-thead-color) inset;
+  -webkit-text-fill-color: #000000;
+}
+
+input::placeholder {
+  color: var(--common-text-color);
+  border-color: var(--auth-btn);
+  border-radius: 5px;
+}
+
+input:hover{
+  color: var(--common-text-color);
+  border-color: var(--auth-btn);
+  border-radius: 5px;
+}
+
+input:focus { outline: none; }
+
+
+
+textarea{
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  color-scheme: light;
+
+  width: 100%;          /* поле занимает всю ширину ячейки */
+  box-sizing: border-box;/* рамка и padding входят в ширину, не вылезают за столбец */
+
+  background-color: var(--table-thead-color);
+  color: #000000;
+  border: 2px solid var(--auth-btn);
+  border-radius: 5px;
+  padding: 3px 5px;   /* по желанию, чтобы текст не лип к краю */
+}
+
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0 1000px var(--table-thead-color) inset;
+  -webkit-text-fill-color: #000000;
+}
+
+textarea::placeholder {
+  color: var(--common-text-color);
+  border-color: var(--auth-btn);
+  border-radius: 5px;
+}
+
+textarea:hover{
+  color: var(--common-text-color);
+  border-color: var(--auth-btn);
+  border-radius: 5px;
+}
+
+textarea:focus { outline: none; }

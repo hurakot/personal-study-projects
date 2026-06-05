@@ -1,0 +1,70 @@
+
+<!-- CRUD_table_task.html - Страница с таблицей с CRUD-функциями всех заданий-->
+
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='CRUD_table.css') }}">
+    <div class="container py-4">
+
+        {# ---- Верхняя панель навигационных кнопок ---- #}
+        <div class="d-flex flex-wrap gap-2 mb-4">
+            <a class="btn btn-info text-dark" href="{{ url_for('admin') }}">Вернуться обратно</a>
+            <a class="btn btn-info text-dark" href="{{ url_for('CRUD_table_member') }}">Работа с записями представителей</a>
+            <a class="btn btn-info text-dark" href="{{ url_for('CRUD_table_mercenary') }}">Работа с записями наёмников</a>
+        </div>
+
+        <h1 class="mb-4">Инструмент с CRUD-функционалом заданий</h1>
+
+        {# ---- Таблица представителей ---- #}
+        <table class="table table-bordered align-middle text-center w-auto">
+            <thead>
+                <tr>
+                    <th>id</th>
+                    <th>Название задания</th>
+                    <th>Организация</th>
+                    <th>Дата завершения задания</th>
+                    <th>Создать</th>
+                    <th>Посмотреть</th>
+                    <th>Изменить</th>
+                    <th>Удалить</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for task in tasks %}
+                    <tr>
+                        <td>{{ task.id_task }}</td>
+                        <td>{{ task.id_name_task }}</td>
+                        <td>{{ task.fraction }}</td>
+                        <td>{{ task.end_of_task }}</td>
+                        <td><a class="btn btn-sm btn-primary" href="{{ url_for('create_task') }}">Создать</a></td>
+                        <td><a class="btn btn-sm btn-primary" href="{{ url_for('READ_table_task', id_task=task.id_task) }}">Посмотреть</a></td>
+                        <td><a class="btn btn-sm btn-primary" href="{{ url_for('UPDATE_table_task', id_task=task.id_task) }}">Изменить</a></td>
+                        <td><button class="btn btn-sm btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#myModal{{ task.id_task }}">Удаление</button></td>
+                    </tr>
+                    <div class="modal fade" id = "myModal{{ task.id_task }}">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                <h5 class="modal-title">Удаление записи</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <input value="{{ task.id }}" name="id" type="hidden">
+                                    Вы правда хотите удалить задание {{ task.id_name_task }}?
+                                </div>
+                                <div class="modal-footer">
+                                    <form method="POST" action="{{ url_for('delete_task', id_task = task.id_task) }}">
+                                        <button class="btn btn-danger">Удалить</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,70 @@
+
+<!-- CRUD_table_mercenary.html - Страница с таблицей с CRUD-функциями всех записей наёмников-->
+
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='CRUD_table.css') }}">
+    <div class="container py-4">
+
+        {# ---- Верхняя панель навигационных кнопок ---- #}
+        <div class="d-flex flex-wrap gap-2 mb-4">
+            <a class="btn btn-info text-dark" href="{{ url_for('admin') }}">Вернуться обратно</a>
+            <a class="btn btn-info text-dark" href="{{ url_for('CRUD_table_member') }}">Работа с записями представителей</a>
+            <a class="btn btn-info text-dark" href="{{ url_for('CRUD_table_task') }}">Работа с заданиями</a>
+        </div>
+
+        <h1 class="mb-4">Инструмент с CRUD-функционалом записей наёмников</h1>
+
+        {# ---- Таблица представителей ---- #}
+        <table class="table table-bordered align-middle text-center w-auto">
+            <thead>
+                <tr>
+                    <th>id</th>
+                    <th>Никнейм наёмника</th>
+                    <th>Рейтинг наёмника</th>
+                    <th>Статус наёмника</th>
+                    <th>Создать</th>
+                    <th>Посмотреть</th>
+                    <th>Изменить</th>
+                    <th>Удалить</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for mercenary in mercenaries %}
+                    <tr>
+                        <td>{{ mercenary.id }}</td>
+                        <td>{{ mercenary.username }}</td>
+                        <td>{{ mercenary.mercenary.rating_mercenary }}</td>
+                        <td>{{ mercenary.mercenary.status_mercenary }}</td>
+                        <td><a class="btn btn-sm btn-primary" href="{{ url_for('create_mercenary') }}">Создать</a></td>
+                        <td><a class="btn btn-sm btn-primary" href="{{ url_for('READ_table_mercenary', id=mercenary.id) }}">Посмотреть</a></td>
+                        <td><a class="btn btn-sm btn-primary" href="{{ url_for('UPDATE_table_mercenary', id=mercenary.id) }}">Изменить</a></td>
+                        <td><button class="btn btn-sm btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#myModal{{ mercenary.id }}">Удаление</button></td>
+                    </tr>
+                    <div class="modal fade" id = "myModal{{ mercenary.id }}">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                <h5 class="modal-title">Удаление записи</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <input value="{{ mercenary.id }}" name="id" type="hidden">
+                                    Вы правда хотите удалить запись {{ mercenary.username }}?
+                                </div>
+                                <div class="modal-footer">
+                                    <form method="POST" action="{{ url_for('delete_mercenary', id = mercenary.id) }}">
+                                        <button class="btn btn-danger">Удалить</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}

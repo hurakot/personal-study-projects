@@ -1,0 +1,74 @@
+
+<!-- READ_UPDATE_table_mercenary.html - Страница с таблицей для READ-UPDATE всех записей наёмников-->
+
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='CRUD_table.css') }}">
+    <div class="container py-4">
+
+        {# ---- Верхняя панель навигационных кнопок ---- #}
+        <div class="d-flex flex-wrap gap-2 mb-4">
+            <a class="btn btn-info text-dark" href="{{ url_for('admin') }}">Инструменты администратора</a>
+            <a class="btn btn-info text-dark" href="{{ url_for('CRUD_table_member') }}">Работа с записями представителей</a>
+            <a class="btn btn-info text-dark" href="{{ url_for('CRUD_table_mercenary') }}">Работа с кабинетами наёмников</a>
+            <a class="btn btn-info text-dark" href="{{ url_for('CRUD_table_task') }}">Работа с заданиями</a>
+        </div>
+
+        <h1 class="mb-4">Инструмент с CRUD-функционалом записей представителей</h1>
+
+        {# ---- Таблица представителей ---- #}
+        <table class="table table-bordered align-middle text-center w-auto">
+            <thead>
+                <tr>
+                    <th>Характеристики</th>
+                    <th>Значение</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>id наёмника</td>
+                    <td>{{ mercenary.id }}</td>
+                </tr>
+                <tr>
+                    <td>Никнейм наёмника</td>
+                    <td>{{ mercenary.username }}</td>
+                </tr>
+                <tr>
+                    <td>Пароль наёмника</td>
+                    <td>{{ mercenary.password }}</td>
+                </tr>
+                <tr>
+                    <td>Telegram username наёмника</td>
+                    <td>{{ mercenary.mercenary.telegram_username }}</td>
+                </tr>
+                <tr>
+                    <td>Код сертификата наёмника</td>
+                    <td>{{ mercenary.mercenary.certificate_code }}</td>
+                </tr>
+                <tr>
+                    <td>Рейтинг наёмника</td>
+                    <td>{{ mercenary.mercenary.rating_mercenary }}</td>
+                </tr>
+                <tr>
+                    <td>Статус наёмника</td>
+                    <td>{{ mercenary.mercenary.status_mercenary}}</td>
+                </tr>
+                <tr>
+                    <td>Дата регистрации наёмника</td>
+                    <td>{{ mercenary.registration_date }}</td>
+                </tr>
+                <tr>
+                    <td>Любимая организация</td>
+                    <td>{{ mercenary.mercenary.favourite_fraction }}</td>
+                </tr>
+                <tr>
+                    <td>Цена наёмника на миссию</td>
+                    <td>{{ mercenary.mercenary.price_mercenary }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}

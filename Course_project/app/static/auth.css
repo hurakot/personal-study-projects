@@ -1,0 +1,157 @@
+
+
+/* auth.css - файл с стилями для страницы аутентификации */
+
+/*
+body {
+    font-size: 1.25rem;
+}
+
+footer {
+    background-color: black;
+    color: white;
+}
+
+.footer_div{
+    padding-left: 90px;
+    padding-top: 40px;
+    padding-bottom: 40px;
+}
+
+.avatar {
+    max-width: 100%;
+}
+
+.main-container{
+    background-color: #FFFFFF;
+    padding: 200px 0px;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    
+
+}
+*/
+
+:root {
+  --auth-bg:        #5743EF;  /* фон карточки */
+  --auth-bg-active: #6F54CF;  /* активный фон */
+  --auth-field-bg:  #9F75F1;  /* фон полей и блока */
+  --auth-border:    #642c7b;  /* рамки */
+  --auth-btn:       #055596;  /* бирюзовые кнопки */
+  --auth-btn-hover: #184072;
+  --placeholder:    #00000080;
+
+}
+
+.main-container{
+    background-color: #FFFFFF;
+    padding: 40px 0px;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+}
+
+/* Карточка формы */
+.auth-card {
+  position: relative;
+  max-width: 520px;
+  background-color: var(--auth-bg);
+  padding-top: 30px;
+  padding-bottom: 15px;
+  padding-left: 40px;
+  padding-right: 40px;
+  border-radius: 4px;
+}
+
+/* Кнопка закрытия (X) */
+.auth-close {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  width: 34px;
+  height: 34px;
+  line-height: 30px;
+  text-align: center;
+  font-size: 22px;
+  color: var(--auth-border);
+  background: var(--auth-field-bg);
+  border: 2px solid var(--auth-border);
+  border-radius: 50%;
+  text-decoration: none;
+}
+.auth-close:hover { background: var(--auth-bg-active); }
+
+/* Заголовок */
+.auth-title {
+  text-align: center;
+  font-size: 48px;
+  color: #000;
+  margin-bottom: 25px;
+}
+
+/* Блок с полями (рамка вокруг логина и пароля) */
+.auth-fields {
+  border: 2px solid var(--auth-border);
+  border-radius: 4px;
+  padding: 20px;
+  margin-bottom: 25px;
+}
+
+/* Подписи "Введите логин/пароль" */
+.auth-label {
+  display: flex;
+  align-items: center;
+  background-color: var(--auth-field-bg);
+  border: 2px solid var(--auth-border);
+  border-radius: 4px;
+  padding: 12px 14px;
+  margin-bottom: 12px;
+  font-weight: 600;
+  color: #000;
+  box-sizing: border-box;
+}
+
+/* Поля ввода */
+.auth-input {
+  background-color: var(--auth-field-bg);
+  border: 2px solid var(--auth-border);
+  color: #000;
+  margin-bottom: 16px;
+  padding: 12px 14px;
+}
+.auth-input:focus {
+  background-color: var(--auth-field-bg);
+  border-color: #6a4fc9;
+  box-shadow: none;
+  color: #000;
+}
+.auth-input::placeholder { color: var(--placeholder); }
+
+/* Кнопка "Войти в систему" */
+.auth-btn-login {
+  background-color: var(--auth-btn);
+  color: #000;
+  font-weight: 600;
+  padding: 8px 24px;
+  border: none;
+}
+.auth-btn-login:hover { background-color: var(--auth-btn-hover); color: #000; }
+
+/* Текст-пояснение */
+.auth-note {
+  text-align: center;
+  font-weight: 600;
+  color: #000;
+  margin: 22px 0 18px;
+}
+
+/* Бирюзовые кнопки создания записи */
+.auth-btn-secondary {
+  background-color: var(--auth-btn);
+  color: #000;
+  font-weight: 600;
+  padding: 12px;
+  border: none;
+}
+.auth-btn-secondary:hover { background-color: var(--auth-btn-hover); color: #fff; }

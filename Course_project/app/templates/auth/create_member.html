@@ -1,0 +1,36 @@
+
+<!-- create_member.html - Страница создания записи представителя -->
+
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='create_account.css') }}">
+
+    <div class="form-card">
+
+        <h1 class="form-title">Создание записи представителя</h1>
+
+        <form method="POST" action="{{ url_for('create_member') }}">
+
+            <div class="form-grid">
+            <!-- Каждая строка = подпись слева + поле справа -->
+                <label class="grid-label" for="nickname">Придумайте никнейм:</label>
+                <input class="grid-input" id="nickname" name="username" type="text" placeholder="Никнейм">
+
+                <label class="grid-label" for="password">Придумайте пароль:</label>
+                <input class="grid-input" id="password" name="password" type="password" placeholder="Пароль">
+
+                <label class="grid-label" for="telegram">Напишите название вашей организации:</label>
+                <input class="grid-input" id="telegram" name="organization_name" type="text" placeholder="Название организации">
+
+                <label class="grid-label" for="cert">Напишите код вашей организации:</label>
+                <input class="grid-input" id="cert" name="organization_code" type="text" placeholder="Код организации">
+            </div>
+
+            <div class="text-end mt-3">
+                <button type="submit" class="btn form-btn">Создать кабинет</button>
+            </div>
+        </form>
+    </div>
+{% endblock %}
