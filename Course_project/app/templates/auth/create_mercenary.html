@@ -1,0 +1,36 @@
+
+<!-- create_mercenary.html - Страница создания личного кабинета наёмника -->
+
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='create_account.css') }}">
+
+    <div class="form-card">
+
+        <h1 class="form-title">Создание личного кабинета наёмника</h1>
+
+        <form method="POST" action="{{ url_for('create_mercenary') }}">
+
+            <div class="form-grid">
+            <!-- Каждая строка = подпись слева + поле справа -->
+                <label class="grid-label" for="nickname">Придумайте никнейм:</label>
+                <input class="grid-input" id="nickname" name="username" type="text" placeholder="Никнейм">
+
+                <label class="grid-label" for="password">Придумайте пароль:</label>
+                <input class="grid-input" id="password" name="password" type="password" placeholder="Пароль">
+
+                <label class="grid-label" for="telegram">Напиши свой username в Telegram:</label>
+                <input class="grid-input" id="telegram" name="telegram" type="text" placeholder="@username">
+
+                <label class="grid-label" for="cert">Код вашего сертификата наёмника:</label>
+                <input class="grid-input" id="cert" name="cert" type="text" placeholder="Код сертификата">
+            </div>
+
+            <div class="text-end mt-3">
+                <button type="submit" class="btn form-btn">Создать кабинет</button>
+            </div>
+        </form>
+    </div>
+{% endblock %}

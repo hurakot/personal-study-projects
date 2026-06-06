@@ -1,0 +1,51 @@
+
+<!-- create_task.html - Страница создания задания -->
+
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='create_account.css') }}">
+
+    <div class="form-card">
+
+        <h1 class="form-title">Создание задания</h1>
+
+        <form method="POST" action="{{ url_for('create_task') }}">
+
+            <div class="form-grid">
+            <!-- Каждая строка = подпись слева + поле справа -->
+                <label class="grid-label" for="name_task">Название задания:</label>
+                <input class="grid-input" id="name_task" name="name_task" type="text" placeholder="Название задания">
+                
+                <label class="grid1-label" for="short_description">Краткое описание задания:</label>
+                <input class="grid1-input" id="short_description" name="short_description" type="text" placeholder="Краткое описание задания">
+                
+                <label class="grid1-label" for="full_description">Полное описание задания:</label>
+                <textarea class="grid1-input" id="full_description" name="full_description" type="text" rows="5" placeholder="Полное описание задания"></textarea>
+
+                <label class="grid1-label" for="purpose_task">Цель задания:</label>
+                <input class="grid-input" id="purpose_task" name="purpose_task" type="text" placeholder="Цель задания">
+
+                <label class="grid-label" for="place_task">Место выполнения задания:</label>
+                <input class="grid-input" id="place_task" name="place_task" type="text" placeholder="Место выполнения задания">
+
+                <label class="grid-label" for="rating_task">Рейтинг задания:</label>
+                <input class="grid-input" id="rating_task" name="rating_task" type="text" placeholder="Рейтинг задания">
+
+                <label class="grid-label" for="reward_task">Награда за выполнение задания:</label>
+                <input class="grid-input" id="reward_task" name="reward_task" type="text" placeholder="Награда за выполнение задания">
+
+                {% if current_user.role == "admin" %}
+                    <label class="grid-label" for="fraction">Организация-наниматель:</label>
+                    <input class="grid-input" id="fraction" name="fraction" type="text" placeholder="Организация-наниматель">
+                {% endif %}
+            </div>
+
+            <div class="text-end mt-3">
+                <button type="submit" class="btn form-btn">Создать новое задание</button>
+            </div>
+        </form>
+    </div>
+
+{% endblock %}

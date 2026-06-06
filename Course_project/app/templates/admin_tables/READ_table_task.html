@@ -1,0 +1,98 @@
+
+<!-- READ_UPDATE_table_task.html - Страница с таблицей для READ-UPDATE всех заданий -->
+
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='CRUD_table.css') }}">
+    <div class="container py-4">
+
+        {# ---- Верхняя панель навигационных кнопок ---- #}
+        <div class="d-flex flex-wrap gap-2 mb-4">
+            <a class="btn btn-info text-dark" href="{{ url_for('admin') }}">Инструменты администратора</a>
+            <a class="btn btn-info text-dark" href="{{ url_for('CRUD_table_member') }}">Работа с записями представителей</a>
+            <a class="btn btn-info text-dark" href="{{ url_for('CRUD_table_mercenary') }}">Работа с кабинетами наёмников</a>
+            <a class="btn btn-info text-dark" href="{{ url_for('CRUD_table_task') }}">Работа с заданиями</a>
+        </div>
+
+        <h1 class="mb-4">Инструмент с CRUD-функционалом заданий</h1>
+
+        {# ---- Таблица представителей ---- #}
+        <table class="table table-bordered align-middle text-center w-100">
+            <thead>
+                <tr>
+                    <th>Характеристики</th>
+                    <th>Значение</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="width: 300px;">id задания</td>
+                    <td>{{ task.id_task }}</td>
+                </tr>
+                <tr>
+                    <td>Название задания</td>
+                    <td>{{ task.id_name_task }}</td>
+                </tr>
+                <tr>
+                    <td>Краткое описание</td>
+                    <td class="text-start px-4" style="white-space: pre-line; overflow-wrap: anywhere;">{{ task.short_description }}</td>
+                </tr>
+                <tr>
+                    <td>Полное описание</td>
+                    <td class="text-start px-4" style="white-space: pre-line; overflow-wrap: anywhere;">{{ task.full_description }}</td>
+                </tr>
+                <tr>
+                    <td>Цель задания</td>
+                    <td>{{ task.purpose_task }}</td>
+                </tr>
+                <tr>
+                    <td>Место выполнения задания</td>
+                    <td>{{ task.place_task }}</td>
+                </tr>
+                <tr>
+                    <td>Рейтинг задания</td>
+                    <td>{{ task.rating_task }}</td>
+                </tr>
+                <tr>
+                    <td>Награда за выполнение задания</td>
+                    <td>{{ task.reward_task }}</td>
+                </tr>
+                <tr>
+                    <td>Организация</td>
+                    <td>{{ task.fraction }}</td>
+                </tr>
+                <tr>
+                    <td>id наёмника-исполнителя</td>
+                    <td>{{ task.id_mercenary }}</td>
+                </tr>
+                <tr>
+                    <td>Статус задания</td>
+                    <td>{{ task.status_task }}</td>
+                </tr>
+                <tr>
+                    <td>Дата публикации задания</td>
+                    <td>{{ task.start_of_task }}</td>
+                </tr>
+                <tr>
+                    <td>Дата начала выполнения задания</td>
+                    <td>{{ task.doing_task }}</td>
+                </tr>
+                <tr>
+                    <td>Дата завершения задания</td>
+                    <td>{{ task.end_of_task }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+<style>
+    /* Разрывать длинные строки без пробелов во всех ячейках таблицы */
+    table td, table th {
+        overflow-wrap: anywhere;
+        word-break: break-word;
+    }
+</style>
+
+{% endblock %}

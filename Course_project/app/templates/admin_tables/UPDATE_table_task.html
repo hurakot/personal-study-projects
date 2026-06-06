@@ -1,0 +1,103 @@
+
+<!-- READ_UPDATE_table_task.html - Страница с таблицей для READ-UPDATE всех заданий -->
+
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='CRUD_table.css') }}">
+    <div class="container py-4">
+
+        {# ---- Верхняя панель навигационных кнопок ---- #}
+        <div class="d-flex flex-wrap gap-2 mb-4">
+            <a class="btn btn-info text-dark" href="{{ url_for('admin') }}">Инструменты администратора</a>
+            <a class="btn btn-info text-dark" href="{{ url_for('CRUD_table_member') }}">Работа с записями представителей</a>
+            <a class="btn btn-info text-dark" href="{{ url_for('CRUD_table_mercenary') }}">Работа с кабинетами наёмников</a>
+            <a class="btn btn-info text-dark" href="{{ url_for('CRUD_table_task') }}">Работа с заданиями</a>
+        </div>
+
+        <h1 class="mb-4">Инструмент с CRUD-функционалом записей представителей</h1>
+
+        {# ---- Таблица представителей ---- #}
+        <form method="POST" action="{{ url_for('UPDATE_table_task', id_task=task.id_task) }}">
+            <table class="table table-bordered align-middle text-center w-100">
+                <thead>
+                    <tr>
+                        <th>Характеристики</th>
+                        <th>Значение</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="width: 300px;">
+                            id задания
+                        </td>
+                        <td>{{ task.id_task }}</td>
+                    </tr>
+                    <tr>
+                        <td><label for="id_name_task">Название задания</label></td>
+                        <td><input id="id_name_task" name="id_name_task" type="text" value="{{ task.id_name_task }}" placeholder="{{ task.id_name_task }}"></td>
+                    </tr>
+                    <tr>
+                        <td><label for="short_description">Краткое описание</label></td>
+                        <td class="text-start" style="white-space: pre-line; overflow-wrap: anywhere;">
+                            <textarea id="short_description" name="short_description" type="text" rows="3" maxlength="210" 
+                            placeholder="{{ task.short_description }}">{{ task.short_description }}</textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label for="full_description">Полное описание</label></td>
+                        <td class="text-start" style="white-space: pre-line; overflow-wrap: anywhere;">
+                            <textarea id="full_description" name="full_description" type="text" rows="8" maxlength="700" 
+                            placeholder="{{ task.full_description }}">{{ task.full_description }}</textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label for="purpose_task">Цель задания</label></td>
+                        <td><input id="purpose_task" name="purpose_task" type="text" value="{{ task.purpose_task }}" placeholder="{{ task.purpose_task }}"></td>
+                    </tr>
+                    <tr>
+                        <td><label for="place_task">Место выполнения задания</label></td>
+                        <td><input id="place_task" name="place_task" type="text" value="{{ task.place_task }}" placeholder="{{ task.place_task }}"></td>
+                    </tr>
+                    <tr>
+                        <td><label for="rating_task">Рейтинг задания</label></td>
+                        <td><input id="rating_task" name="rating_task" type="text" value="{{ task.rating_task }}" placeholder="{{ task.rating_task }}"></td>
+                    </tr>
+                    <tr>
+                        <td><label for="reward_task">Награда за выполнение задания</label></td>
+                        <td><input id="reward_task" name="reward_task" type="text" value="{{ task.reward_task }}" placeholder="{{ task.reward_task }}"></td>
+                    </tr>
+                    <tr>
+                        <td><label for="fraction">Организация</label></td>
+                        <td><input id="fraction" name="fraction" type="text" value="{{ task.fraction }}" placeholder="{{ task.fraction }}"></td>
+                    </tr>
+                    <tr>
+                        <td>id наёмника-исполнителя</td>
+                        <td>{{ task.id_mercenary }}</td>
+                    </tr>
+                    <tr>
+                        <td>Статус задания</td>
+                        <td>{{ task.status_task }}</td>
+                    </tr>
+                    <tr>
+                        <td>Дата публикации задания</td>
+                        <td>{{ task.start_of_task }}</td>
+                    </tr>
+                    <tr>
+                        <td>Дата начала выполнения задания</td>
+                        <td>{{ task.doing_task }}</td>
+                    </tr>
+                    <tr>
+                        <td>Дата завершения задания</td>
+                        <td>{{ task.end_of_task }}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="text-start mt-3">
+                <button type="submit" class="btn btn-info text-dark">Подтвердить изменения</button>
+            </div>
+        </form>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,50 @@
+
+<!-- authentication.html - Страница авторизации в систему -->
+
+{% extends 'base.html' %}
+
+{% block content %}
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='auth.css') }}">
+  <div class="auth-card mx-auto">
+
+  <!-- Кнопка закрытия -->
+    <a href="{{ url_for('main_page') }}" class="auth-close" aria-label="Закрыть">&times;</a>
+
+    <h1 class="auth-title">Авторизация:</h1>
+
+    <form method="POST" action="{{ url_for('authentication') }}">
+
+    <!-- Блок с полями -->
+      <div class="auth-fields">
+        <label class="auth-label" for="login">Введите логин:</label>
+        <input type="text" class="form-control auth-input" id="login" name="username" placeholder="Логин">
+
+        <label class="auth-label" for="password">Введите пароль:</label>
+        <input type="password" class="form-control auth-input" id="password" name="password" placeholder="Пароль">
+      </div>
+
+    <!-- Кнопка входа -->
+      <div class="text-center">
+        <button type="submit" class="btn auth-btn-login">Войти в систему</button>
+      </div>
+    </form>
+
+    <p class="auth-note">
+      Если у вас нет учётной записи, то вы можете создать её здесь.
+    </p>
+
+    <div class="d-grid gap-2">
+      <a href="{{ url_for('create_mercenary') }}" class="btn auth-btn-secondary">
+        Создать личный кабинет наёмника
+      </a>
+      <a href="{{ url_for('create_member') }}" class="btn auth-btn-secondary">
+        Создать учётную запись представителя
+      </a>
+    </div>
+
+</div>
+
+
+
+{% endblock %}

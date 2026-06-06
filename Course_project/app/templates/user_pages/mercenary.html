@@ -1,0 +1,259 @@
+
+<!-- mercenary.html - Страница с личным кабинетом наёмника -->
+
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container py-4">
+
+    <h1 class="text-center mb-4">Личный кабинет наёмника</h1>
+
+    {# ---- Карточка с личными данными наёмника ---- #}
+    <div class="card bg-transparent border-light mb-4 mx-auto" style="max-width: 940px;">
+        <div class="card-body text-dark">
+            <h2 class="card-title h3 mb-3">Личный кабинет: {{ current_user.username }}</h2>
+            <p class="mb-1">id: {{ current_user.id }}</p>
+            <p class="mb-1">Никнейм: {{ current_user.username }}</p>
+            <p class="mb-1">Пароль: {{ current_user.password }}</p>
+            <p class="mb-1">Telegram Username: {{ current_user.mercenary.telegram_username }}</p>
+            <p class="mb-1">Код сертификата: {{ current_user.mercenary.certificate_code }}</p>
+            <p class="mb-1">Дата регистрации: {{ current_user.registration_date }}</p>
+            <p class="mb-1">Рейтинг: {{ current_user.mercenary.rating_mercenary }}</p>
+            <p class="mb-1">Статус: {{ current_user.mercenary.status_mercenary }}</p>
+            <p class="mb-1">Любимая организация: {{ current_user.mercenary.favourite_fraction }}</p>
+            {# ---- <!-- Также можно будет добавить, если захочешь, среднюю цену наёмника ""Средняя цена: {{ merc.price_mercenary }} игровой валюты"" --> ---- #}
+            {# ---- <!-- <p class="mb-0">Средняя цена за миссию: {{ current_user.mercenary.price_mercenary }}</p> --> ---- #}
+        </div>
+    </div>
+
+    {# ---- Активные задания ---- #}
+    <div class="section-header px-3 py-2 mb-3 mx-auto">
+        <h2 class="h4 mb-0">Активные задания:</h2>
+    </div>
+
+    <div class="task-scroll mx-auto mb-4">
+        {% for task in mercenary_tasks %}
+        {% for r in task.reports %}
+            {% if r.status_report == "Rejected" %}
+                <div class="report-rejected px-3 py-2 mb-2">
+                    Отчёт с id {{ r.id_report }} по этому заданию не принят. Нужно либо создать новый и более подробный, либо нужно заново выполнить задание.
+                </div>
+            {% endif %}
+        {% endfor %}
+        <div class="task-card mb-3">
+            <div class="task-card__title px-3 py-2 mb-3">
+                <h3 class="h5 mb-0">{{ task.id_name_task }}</h3>
+            </div>
+
+            <div class="task-card__desc px-3 py-2 mb-3">
+                {{ task.short_description }}
+            </div>
+
+            <div class="task-card__badges px-3 py-2 mb-3 d-flex flex-wrap gap-2">
+                <span class="badge-item">Цель: {{ task.purpose_task }}</span>
+                <span class="badge-item">Награда: {{ task.reward_task }}</span>
+                <span class="badge-item">Рейтинг: {{ task.rating_task }}</span>
+                <span class="badge-item">Дата публикации задания: {{ task.start_of_task }}</span>
+                <span class="badge-item">Дата начала выполнения задания: {{ task.doing_task }}</span>
+            </div>
+
+            <div class="d-flex justify-content-end gap-2">
+                <a class="btn btn-info text-dark"
+                   href="{{ url_for('create_record', id_task=task.id_task) }}">Написать отчёт</a>
+                <a class="btn btn-info text-dark"
+                data-bs-toggle="modal"
+                data-bs-target="#taskModal{{ task.id_task }}">Подробнее</a>
+            </div>
+        </div>
+        {# ---- Модальное окно с полными деталями задания ---- #}
+        <div class="modal fade" id="taskModal{{ task.id_task }}" tabindex="-1"
+            aria-labelledby="taskModalLabel{{ task.id_task }}" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+                <div class="modal-content task-modal">
+                    <div class="modal-body text-dark p-4">
+                        <h2 class="task-modal__title h3 mb-3" id="taskModalLabel{{ task.id_task }}">{{ task.id_name_task }}</h2>
+
+                        <p class="mb-1">id задания: {{ task.id_task }}</p>
+                        <p class="mb-1">Цель: {{ task.purpose_task }}</p>
+                        <p class="mb-1">Организация: {{ task.fraction }}</p>
+                        <p class="mb-1">Рейтинг: {{ task.rating_task }}</p>
+                        <p class="mb-1">Награда: {{ task.reward_task }}</p>
+                        <p class="mb-1">Дата: {{ task.start_of_task }}</p>
+                        <p class="mb-3">Статус: &laquo;{{ task.status_task }}&raquo;</p>
+
+                        {# pre-line сохраняет абзацы, anywhere разрывает длинные строки без пробелов #}
+                        <p class="mb-1">&emsp;Описание:</p>
+                        <div style="white-space: pre-line; overflow-wrap: anywhere;">{{ task.full_description }}</div>
+                    </div>
+                    <div class="modal-footer border-0">
+                        <a class="btn btn-info text-dark px-4"
+                            href="{{ url_for('task_download', id_task=task.id_task) }}">Скачать</a>
+                        <button type="button" class="btn btn-info text-dark px-4" data-bs-dismiss="modal">Назад</button>
+                        {% for r in task.reports %}
+                            <a class="btn btn-info text-dark px-4"
+                                href="{{ url_for('report_view', id_report=r.id_report, status_report='mercenary_check_report') }}">
+                                Посмотреть отчёт №{{ r.id_report }}
+                            </a>
+                        {% endfor %}
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    {# ---- Выполненные задания ---- #}
+    <div class="section-header px-3 py-2 mb-3 mx-auto">
+        <h2 class="h4 mb-0">Выполненные задания:</h2>
+    </div>
+
+    <div class="task-scroll mx-auto">
+        {% for task in completed_tasks %}
+        <div class="task-card mb-3">
+            <div class="task-card__title px-3 py-2 mb-3">
+                <h3 class="h5 mb-0">{{ task.title }}</h3>
+            </div>
+
+            <div class="task-card__desc px-3 py-2 mb-3">
+                {{ task.short_description }}
+            </div>
+
+            <div class="task-card__badges px-3 py-2 mb-3 d-flex flex-wrap gap-2">
+                <span class="badge-item">Цель: {{ task.purpose_task }}</span>
+                <span class="badge-item">Награда: {{ task.reward_task }}</span>
+                <span class="badge-item">Рейтинг: {{ task.rating_task }}</span>
+                <span class="badge-item">Дата: {{ task.start_of_task }}</span>
+                <span class="badge-item">Дата: {{ task.end_of_task }}</span>
+            </div>
+
+            <div class="d-flex justify-content-end gap-2">
+                <a class="btn btn-info text-dark"
+                data-bs-toggle="modal"
+                data-bs-target="#donetaskModal{{ task.id_task }}">Подробнее</a>
+            </div>
+        </div>
+        {# ---- Модальное окно с полными деталями задания ---- #}
+        <div class="modal fade" id="donetaskModal{{ task.id_task }}" tabindex="-1"
+            aria-labelledby="donetaskModalLabel{{ task.id_task }}" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+                <div class="modal-content task-modal">
+                    <div class="modal-body text-dark p-4">
+                        <h2 class="task-modal__title h3 mb-3" id="donetaskModalLabel{{ task.id_task }}">{{ task.id_name_task }}</h2>
+
+                        <p class="mb-1">id задания: {{ task.id_task }}</p>
+                        <p class="mb-1">Цель: {{ task.purpose_task }}</p>
+                        <p class="mb-1">Организация: {{ task.fraction }}</p>
+                        <p class="mb-1">Рейтинг: {{ task.rating_task }}</p>
+                        <p class="mb-1">Награда: {{ task.reward_task }}</p>
+                        <p class="mb-1">Дата: {{ task.start_of_task }}</p>
+                        <p class="mb-3">Статус: &laquo;{{ task.status_task }}&raquo;</p>
+
+                        {# pre-line сохраняет абзацы, anywhere разрывает длинные строки без пробелов #}
+                        <p class="mb-1">&emsp;Описание:</p>
+                        <div style="white-space: pre-line; overflow-wrap: anywhere;">{{ task.full_description }}</div>
+                    </div>
+                    <div class="modal-footer border-0">
+                        <div class="justify-content-center">
+                            <div class="p-1">
+                                <a class="btn btn-info text-dark px-4"
+                                    href="{{ url_for('task_download', id_task=task.id_task) }}">Скачать</a>
+                                <button type="button" class="btn btn-info text-dark px-4" data-bs-dismiss="modal">Назад</button>
+                            </div>
+                            <div class="p-1">
+                                {% for r in task.reports %}
+                                    <a class="btn btn-info text-dark px-4" href="{{ url_for('report_view', id_report=r.id_report, status_report='mercenary_check_report') }}">
+                                        Посмотреть отчёт №{{ r.id_report }}
+                                    </a>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+</div>
+
+<style>
+    /* Сиреневые заголовки-разделители */
+    .section-header {
+        max-width: 940px;
+        background: #6c4fc4;
+        border-radius: 4px;
+    }
+    .section-header h2 { color: #2b2b6b; }
+
+    /* Прокручиваемая тёмная панель с заданиями */
+    .task-scroll {
+        max-width: 940px;
+        max-height: 360px;          /* высота, после которой появляется прокрутка */
+        overflow-y: auto;
+        background: rgba(40, 20, 120, 0.55);
+        border: 1px solid rgba(0, 0, 0, 0.3);
+        border-radius: 4px;
+        padding: 18px;
+    }
+
+    /* Фиолетовый скроллбар (WebKit: Chrome, Edge, Safari) */
+    .task-scroll::-webkit-scrollbar {
+        width: 10px;
+    }
+    .task-scroll::-webkit-scrollbar-track {
+        background: transparent;
+    }
+    .task-scroll::-webkit-scrollbar-thumb {
+        background: #a32ba3;        /* пурпурный бегунок, как на макете */
+        border-radius: 6px;
+    }
+    /* Тот же эффект для Firefox */
+    .task-scroll {
+        scrollbar-width: thin;
+        scrollbar-color: #a32ba3 transparent;
+    }
+
+    /* Карточка отдельного задания */
+    .task-card {
+        background: rgba(108, 79, 196, 0.35);
+        border: 1px solid rgba(0, 0, 0, 0.3);
+        border-radius: 4px;
+        padding: 16px;
+    }
+    .task-card__title {
+        background: #6c4fc4;
+        border-radius: 4px;
+    }
+    .task-card__title h3 { color: #2b2b6b; }
+    .task-card__desc,
+    .task-card__badges {
+        background: rgba(108, 79, 196, 0.45);
+        border-radius: 4px;
+        color: #111;
+    }
+
+    /* Плашки с характеристиками задания */
+    .badge-item {
+        display: inline-block;
+        background: rgba(108, 79, 196, 0.5);
+        border: 1px solid rgba(0, 0, 0, 0.35);
+        border-radius: 3px;
+        padding: 4px 10px;
+        color: #111;
+        font-size: 0.95rem;
+    }
+
+    .report-rejected {
+        background: #f8d7da;          /* мягкий красный фон */
+        border: 1px solid #dc3545;
+        border-radius: 4px;
+        color: #842029;
+        font-size: 0.9rem;
+    }
+</style>
+{% endblock %}
+
+
+
+

@@ -1,0 +1,209 @@
+
+<!-- member.html - Страница инструментов представителя -->
+
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="text-center mb-4">Инструменты представителя</h1>
+
+{# ---- Карточка с данными представителя ---- #}
+<div class="card bg-transparent border-light mb-3">
+    <div class="card-body text-dark">
+        <h2 class="card-title h4 mb-3">Запись представителя: {{ current_user.username }}</h2>
+        <p class="mb-1">id: {{ current_user.id }}</p>
+        <p class="mb-1">Никнейм: {{ current_user.username }}</p>
+        <p class="mb-1">Пароль: {{ current_user.password }}</p>
+        <p class="mb-1">Организация: {{ current_user.member.fraction }}</p>
+        <p class="mb-0">Дата регистрации: {{current_user.registration_date }}</p>
+    </div>
+</div>
+
+{# ---- Активные задания ---- #}
+<div class="section-header px-3 py-2 mb-3">
+    <h2 class="h5 mb-0">Активные задания:</h2>
+</div>
+<div class="panel-scroll mb-3">
+    {% for task in active_tasks %}
+    <div class="row-card d-flex flex-wrap align-items-center gap-2 mb-2 px-3 py-2">
+        <span class="row-card__title flex-grow-1">{{ task.id_name_task }}</span>
+        <span class="badge-item">Дата: {{ task.start_of_task }}</span>
+        <a class="btn btn-info text-dark"
+                data-bs-toggle="modal"
+                data-bs-target="#taskModal{{ task.id_task }}">Подробнее</a>
+    </div>
+
+    <div class="modal fade" id="taskModal{{ task.id_task }}" tabindex="-1"
+        aria-labelledby="taskModalLabel{{ task.id_task }}" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content task-modal">
+                <div class="modal-body text-dark p-4">
+                    <h2 class="task-modal__title h3 mb-3" id="taskModalLabel{{ task.id_task }}">{{ task.id_name_task }}</h2>
+
+                    <p class="mb-1">id задания: {{ task.id_task }}</p>
+                    <p class="mb-1">Цель: {{ task.purpose_task }}</p>
+                    <p class="mb-1">Организация: {{ task.fraction }}</p>
+                    <p class="mb-1">Рейтинг: {{ task.rating_task }}</p>
+                    <p class="mb-1">Награда: {{ task.reward_task }}</p>
+                    <p class="mb-1">Дата: {{ task.start_of_task }}</p>
+                    <p class="mb-3">Статус: &laquo;{{ task.status_task }}&raquo;</p>
+
+                    {# pre-line сохраняет абзацы, anywhere разрывает длинные строки без пробелов #}
+                    <p class="mb-1">&emsp;Описание:</p>
+                    <div style="white-space: pre-line; overflow-wrap: anywhere;">{{ task.full_description }}</div>
+                </div>
+                <div class="modal-footer border-0">
+                    <a class="btn btn-info text-dark px-4"
+                    href="{{ url_for('task_download', id_task=task.id_task) }}">Скачать</a>
+                    <button type="button" class="btn btn-info text-dark px-4" data-bs-dismiss="modal">Назад</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+{# ---- Взятые задания ---- #}
+<div class="section-header px-3 py-2 mb-3">
+    <h2 class="h5 mb-0">Взятые задания:</h2>
+</div>
+<div class="panel-scroll mb-3">
+    {% for task in taken_tasks %}
+    <div class="task-card mb-2 px-3 py-2">
+        <div class="d-flex flex-wrap align-items-center gap-2">
+            <span class="row-card__title flex-grow-1">{{ task.id_name_task }}</span>
+            <span class="badge-item">Дата: {{ task.start_of_task }}</span>
+            <span class="badge-item">Выполняет: {{ task.executor.user.username }}</span>
+            <a class="btn btn-info text-dark"
+                data-bs-toggle="modal"
+                data-bs-target="#taskModaldoing{{ task.id_task }}">Подробнее</a>
+        </div>
+    </div>
+
+    <div class="modal fade" id="taskModaldoing{{ task.id_task }}" tabindex="-1"
+        aria-labelledby="taskModalLabeldoing{{ task.id_task }}" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content task-modal">
+                <div class="modal-body text-dark p-4">
+                    <h2 class="task-modal__title h3 mb-3" id="taskModalLabeldoing{{ task.id_task }}">{{ task.id_name_task }}</h2>
+
+                    <p class="mb-1">id задания: {{ task.id_task }}</p>
+                    <p class="mb-1">Цель: {{ task.purpose_task }}</p>
+                    <p class="mb-1">Организация: {{ task.fraction }}</p>
+                    <p class="mb-1">Рейтинг: {{ task.rating_task }}</p>
+                    <p class="mb-1">Награда: {{ task.reward_task }}</p>
+                    <p class="mb-1">Дата: {{ task.start_of_task }}</p>
+                    <p class="mb-3">Статус: &laquo;{{ task.status_task }}&raquo;</p>
+
+                    {# pre-line сохраняет абзацы, anywhere разрывает длинные строки без пробелов #}
+                    <p class="mb-1">&emsp;Описание:</p>
+                    <div style="white-space: pre-line; overflow-wrap: anywhere;">{{ task.full_description }}</div>
+                </div>
+                <div class="modal-footer border-0">
+                    <a class="btn btn-info text-dark px-4"
+                    href="{{ url_for('task_download', id_task=task.id_task) }}">Скачать</a>
+                    <button type="button" class="btn btn-info text-dark px-4" data-bs-dismiss="modal">Назад</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+{# ---- Активные отчёты ---- #}
+<div class="section-header px-3 py-2 mb-3">
+    <h2 class="h5 mb-0">Активные отчёты:</h2>
+</div>
+<div class="panel-plain mb-3">
+    <div class="d-grid gap-2">
+        {% for report in active_reports %}
+        <a class="btn btn-info text-dark text-start"
+           href="{{ url_for('report_view', id_report=report.id_report, status_report='active_report') }}">
+            {{ report.task.id_name_task }} (Выполнил {{ report.mercenary.user.username }})
+        </a>
+        {% endfor %}
+    </div>
+</div>
+
+{# ---- Уже проверенные отчёты ---- #}
+<div class="section-header px-3 py-2 mb-3">
+    <h2 class="h5 mb-0">Уже проверенные отчёты:</h2>
+</div>
+<div class="panel-plain mb-3">
+    <div class="d-grid gap-2">
+        {% for report in checked_reports %}
+        <a class="btn btn-info text-dark text-start"
+           href="{{ url_for('report_view', id_report=report.id_report, status_report='checked_report') }}">
+            {{ report.task.id_name_task }} (Выполнил {{ report.mercenary.user.username }}) 
+            {% if report.status_report == "Rejected" %} !!Отчёт по заданию не засчитан!!{% endif %}
+        </a>
+        {% endfor %}
+    </div>
+</div>
+
+{# ---- Создать задание ---- #}
+<div class="section-header px-3 py-2 mb-3">
+    <h2 class="h5 mb-0">Создать задание</h2>
+</div>
+<div class="panel-plain mb-3">
+    <div class="d-flex justify-content-end">
+        <a class="btn btn-info text-dark"
+           href="{{ url_for('create_task') }}">Создать задание</a>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<style>
+    .section-header { background: #6c4fc4; border-radius: 4px; }
+    .section-header h2 { color: #2b2b6b; }
+
+    .panel-scroll {
+        max-height: 280px;
+        overflow-y: auto;
+        background: rgba(40, 20, 120, 0.55);
+        border: 1px solid rgba(0, 0, 0, 0.3);
+        border-radius: 4px;
+        padding: 16px;
+    }
+    .panel-plain {
+        background: rgba(108, 79, 196, 0.4);
+        border: 1px solid rgba(0, 0, 0, 0.25);
+        border-radius: 4px;
+        padding: 16px;
+    }
+
+    .panel-scroll::-webkit-scrollbar { width: 10px; }
+    .panel-scroll::-webkit-scrollbar-track { background: transparent; }
+    .panel-scroll::-webkit-scrollbar-thumb { background: #a32ba3; border-radius: 6px; }
+    .panel-scroll { scrollbar-width: thin; scrollbar-color: #a32ba3 transparent; }
+
+    .row-card { background: rgba(108, 79, 196, 0.45); border-radius: 4px; }
+    .row-card__title { color: #2b2b6b; font-size: 1.1rem; }
+
+    .task-card { background: rgba(108, 79, 196, 0.45); border-radius: 4px; }
+    .task-card__title { color: #2b2b6b; }
+
+    .badge-item {
+        display: inline-block;
+        background: rgba(108, 79, 196, 0.55);
+        border: 1px solid rgba(0, 0, 0, 0.35);
+        border-radius: 3px;
+        padding: 3px 9px;
+        color: #111;
+        font-size: 0.85rem;
+    }
+</style>
+{% endblock %}
